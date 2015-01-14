@@ -49,7 +49,7 @@ function start-opendai {
 	
 	log "Cloudstack stuff"
 	#First cloudstack recover virtual router IP
-	server_ip=$(cat /var/lib/dhclient/dhclient-eth0.leases | grep dhcp-server-identifier | tail -1| awk '{print $NF}' | tr '\;' ' ')
+	server_ip=$(cat /var/lib/NetworkManager/*.lease | grep dhcp-server-identifier | tail -1| awk '{print $NF}' | tr '\;' ' ')
 	server_ip2=${server_ip:0:${#server_ip}-1}
 	log "Cloudstsack virtual router" $server_ip2
 	userdata=$(curl http://$server_ip2/latest/user-data)
