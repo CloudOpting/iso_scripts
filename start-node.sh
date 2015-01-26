@@ -49,14 +49,14 @@ function start-opendai {
 	
 	log "Cloudstack stuff"
 	#First cloudstack recover virtual router IP
-	server_ip=$(cat /var/lib/NetworkManager/*.lease | grep dhcp-server-identifier | tail -1| awk '{print $NF}' | tr '\;' ' ')
-	server_ip2=${server_ip:0:${#server_ip}-1}
-	log "Cloudstsack virtual router" $server_ip2
+#	server_ip=$(cat /var/lib/NetworkManager/*.lease | grep dhcp-server-identifier | tail -1| awk '{print $NF}' | tr '\;' ' ')
+#	server_ip2=${server_ip:0:${#server_ip}-1}
+#	log "Cloudstsack virtual router" $server_ip2
 	userdata=$(curl http://$server_ip2/latest/user-data)
-	log "userdata:" $userdata
+#	log "userdata:" $userdata
 
 	#transform userdata in env vars
-	eval $userdata
+#	eval $userdata
 	
 	# CHECK ENV VARS
 	# could be from Cloudstack or have to have a default value
@@ -85,8 +85,9 @@ function start-opendai {
 	systemctl start fail2ban
 	systemctl enable fail2ban
 
-	# Configuration tool Augeas
+	# Configuration tool Augeas and facter
 	ensure_package_installed "augeas"
+	ensure_package_installed "facter"
 	# Editor nano
 	ensure_package_installed "nano"
 
