@@ -190,6 +190,16 @@ function start-opendai {
 	curl -L https://raw.githubusercontent.com/CloudOpting/iso_scripts/master/r10k_install.pp  >> /var/tmp/r10k_installation.pp
 	#installing git
 	ensure_package_installed "git"
+	
+	# setup fog - better having it before getting cloudstack modules from r10k
+	ensure_package_installed "ruby-devel"
+	ensure_package_installed "ruby-rgen" 
+	ensure_package_installed "gcc" 
+	ensure_package_installed "patch" 
+	ensure_package_installed "libxslt-devel" 
+	ensure_package_installed "libxml2-devel" 
+	gem install fog
+	
 	puppet module install zack/r10k
 	puppet apply /var/tmp/r10k_installation.pp
 	gem install r10k
@@ -305,14 +315,11 @@ EOF
 	# could be needed to be done a second time for #2 bug
 	r10k deploy environment -pv
 	
-	# setup fog
-	ensure_package_installed "ruby-devel"
-	ensure_package_installed "ruby-rgen" 
-	ensure_package_installed "gcc" 
-	ensure_package_installed "patch" 
-	ensure_package_installed "libxslt-devel" 
-	ensure_package_installed "libxml2-devel" 
-	gem install fog
+	####### Install Docker stuff
+	ensure_package_installed "docker"
+	
+	# Install docker-composer
+	curl -L https://github.com/docker/fig/releases/download/1.1.0-rc1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose; chmod +x /usr/local/bin/docker-compose
 }
 
 #execute the tasks
