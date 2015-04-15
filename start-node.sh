@@ -45,6 +45,15 @@ function start-opendai {
 	ensure_package_installed "epel-release"
 	#zabbix repos
 	rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm
+	# virt-testing repo
+cat << 'EOF1' > /etc/yum.repos.d/virt7-testing.repo
+[virt7-testing]
+name=virt7-testing
+baseurl=http://cbs.centos.org/repos/virt7-testing/x86_64/os/
+enabled=1
+gpgcheck=0
+EOF1
+
 	log $(yum check-update)
 	
 	log "Cloudstack stuff"
@@ -125,11 +134,12 @@ dash_db_pwd=dashboard
 
 	# Prepare for docker
 	ensure_package_installed "wget"
+	ensure_package_installed "nano"
+	ensure_package_installed "golang"
 	ensure_package_installed "docker"
 	systemctl disable NetworkManager
 	systemctl stop NetworkManager
 	systemctl stop docker
-	wget https://get.docker.com/builds/Linux/x86_64/docker-latest -O /usr/bin/docker && chmod +x /usr/bin/docker
 	firewall-cmd --permanent --zone=trusted --add-interface=docker0
 	systemctl start docker
 	systemctl enable docker

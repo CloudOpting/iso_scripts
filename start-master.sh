@@ -46,7 +46,16 @@ function start-opendai {
 	#zabbix repos
 	rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm
 	log $(yum check-update)
-	
+	# virt-testing repo
+cat << 'EOF1' > /etc/yum.repos.d/virt7-testing.repo
+[virt7-testing]
+name=virt7-testing
+baseurl=http://cbs.centos.org/repos/virt7-testing/x86_64/os/
+enabled=1
+gpgcheck=0
+EOF1
+
+
 	log "Cloudstack stuff"
 	#First cloudstack recover virtual router IP
 	server_ip=$(ip -4 route list 0/0 | cut -d ' ' -f 3)
@@ -302,24 +311,34 @@ EOF
 #	service kermit-restmco start
 #	chkconfig kermit-restmco on
 	
-	# Installing the Joomla! web management
-	joomlaDBuser=joomla
-	joomlaDBpwd=joomla
-	git clone https://github.com/open-dai/web-management.git /var/www/html
-	chown apache:apache -R /var/www/html/
-	sudo -u postgres PGPASSWORD=$postgres_pwd psql -c "CREATE USER $joomlaDBuser WITH PASSWORD '$joomlaDBpwd';"
-	sudo -u postgres PGPASSWORD=$postgres_pwd psql -c "CREATE DATABASE joomla OWNER $joomlaDBuser;"
-	# any change of data in the web site has to be done before loading the dump in the DB
-	cat /var/www/html/odaimanagement.sql | sudo -u postgres PGPASSWORD=$joomlaDBpwd psql -U $joomlaDBuser joomla
 	
 	# could be needed to be done a second time for #2 bug
 	r10k deploy environment -pv
-	
-	####### Install Docker stuff
+
+	# Install Docker stuff
+	ensure_package_installed "wget"
+	ensure_package_installed "nano"
+	ensure_package_installed "golang"
 	ensure_package_installed "docker"
-	
-	# Install docker-composer
-	curl -L https://github.com/docker/fig/releases/download/1.1.0-rc1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose; chmod +x /usr/local/bin/docker-compose
+	systemctl disable NetworkManager
+	systemctl stop NetworkManager
+	systemctl stop docker
+	firewall-cmd --permanent --zone=trusted --add-interface=docker0
+	systemctl start docker
+	systemctl enable docker
+	curl -L https://github.com/docker/compose/releases/download/1.2.0rc4/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+	chmod +x /usr/local/bin/docker-compose
+
+
+	# setup fog
+	ensure_package_installed "ruby-devel"
+	ensure_package_installed "ruby-rgen" 
+	ensure_package_installed "gcc" 
+	ensure_package_installed "patch" 
+	ensure_package_installed "libxslt-devel" 
+	ensure_package_installed "libxml2-devel" 
+	gem install fog
+
 }
 
 #execute the tasks
