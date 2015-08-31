@@ -28,8 +28,8 @@ function ensure_package_installed (){
 }
 
 
-function start-opendai {
-	log "start-opendai"
+function start-cloudopting {
+	log "start-cloudopting"
 	
 	log "fixing Vagrant keys"
 	chmod 600 /home/vagrant/.ssh/authorized_keys
@@ -55,6 +55,15 @@ enabled=1
 gpgcheck=0
 EOF1
 
+
+cat << 'EOF2' > /etc/yum.repos.d/docker.repo
+[dockerrepo]
+name=Docker Repository
+baseurl=https://yum.dockerproject.org/repo/main/centos/7
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.dockerproject.org/gpg
+EOF2
 
 	log "Cloudstack stuff"
 	#First cloudstack recover virtual router IP
@@ -319,14 +328,15 @@ EOF
 	ensure_package_installed "wget"
 	ensure_package_installed "nano"
 	ensure_package_installed "golang"
-	ensure_package_installed "docker"
+#	ensure_package_installed "docker"
+	ensure_package_installed "docker-engine"
 	systemctl disable NetworkManager
 	systemctl stop NetworkManager
 	systemctl stop docker
 	firewall-cmd --permanent --zone=trusted --add-interface=docker0
 	systemctl start docker
 	systemctl enable docker
-	curl -L https://github.com/docker/compose/releases/download/1.2.0rc4/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+	curl -L https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 	chmod +x /usr/local/bin/docker-compose
 
 
@@ -342,4 +352,4 @@ EOF
 }
 
 #execute the tasks
-start-opendai | tee /root/all.log
+start-cloudopting | tee /root/all.log
