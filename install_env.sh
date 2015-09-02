@@ -28,7 +28,7 @@ chmod +x /usr/local/bin/docker-compose
 mkdir /home/gioppo/Development
 curl http://dist.springsource.com/release/STS/3.7.0.RELEASE/dist/e4.5/spring-tool-suite-3.7.0.RELEASE-e4.5-linux-gtk-x86_64.tar.gz > /root/spring-tool-suite-3.7.0.RELEASE-e4.5-linux-gtk-x86_64.tar.gz
 
-tar -zxvf spring-tool-suite-3.7.0.RELEASE-e4.5-linux-gtk-x86_64.tar.gz /home/gioppo/Development
+tar -zxvf spring-tool-suite-3.7.0.RELEASE-e4.5-linux-gtk-x86_64.tar.gz -C /home/gioppo/Development
 
 cd /home/gioppo/Development/sts-bundle/sts-*
 
