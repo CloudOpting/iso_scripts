@@ -32,6 +32,9 @@ tar -zxvf spring-tool-suite-3.7.0.RELEASE-e4.5-linux-gtk-x86_64.tar.gz -C /home/
 
 cd /home/gioppo/Development/sts-bundle/sts-*
 
-./STS -noSplash -application org.eclipse.equinox.p2.director  -u org.activiti.designer.feature.feature.group, com.objectaid.uml.cls.feature.group -r http://activiti.org/designer/update/, http://www.objectaid.net/update/site.xml
+./STS -noSplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/mars -installIUs org.eclipse.emf.transaction
+./STS -noSplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/mars -installIUs org.eclipse.emf.workspace
+./STS -noSplash -application org.eclipse.equinox.p2.director  -repository http://activiti.org/designer/update/ -installIUs org.activiti.designer.feature.feature.group
+./STS -noSplash -application org.eclipse.equinox.p2.director  -repository http://www.objectaid.net/update/site.xml -installIUs com.objectaid.uml.cls.feature.group
 
 chown gioppo:gioppo -R /home/gioppo/Development
