@@ -8,7 +8,7 @@ mkdir /cloudOptingData
 chown gioppo:gioppo /cloudOptingData/
 
 # JAVA
-yum remove -y java-1.7.0-openjdk
+yum remove -y java-1.7.0-openjdk java-1.7.0-openjdk-headless
 
 yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel
 yum install libreoffice
