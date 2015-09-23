@@ -65,6 +65,16 @@ gpgcheck=1
 gpgkey=https://yum.dockerproject.org/gpg
 EOF2
 
+cat << 'EOF3' > /etc/yum.repos.d/elasticsearch.repo
+[elasticsearch-1.7]
+name=Elasticsearch repository for 1.7.x packages
+baseurl=http://packages.elastic.co/elasticsearch/1.7/centos
+gpgcheck=1
+gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+EOF3
+
+rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
 	log "Cloudstack stuff"
 	#First cloudstack recover virtual router IP
 	server_ip=$(ip -4 route list 0/0 | cut -d ' ' -f 3)
@@ -348,6 +358,9 @@ EOF
 	ensure_package_installed "libxslt-devel" 
 	ensure_package_installed "libxml2-devel" 
 	gem install fog
+	
+	# Install elasticsearch
+	ensure_package_installed "elasticsearch" 
 
 }
 
