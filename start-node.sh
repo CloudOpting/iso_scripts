@@ -54,6 +54,15 @@ enabled=1
 gpgcheck=0
 EOF1
 
+cat << 'EOF2' > /etc/yum.repos.d/docker.repo
+[dockerrepo]
+name=Docker Repository
+baseurl=https://yum.dockerproject.org/repo/main/centos/7
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.dockerproject.org/gpg
+EOF2
+
 	log $(yum check-update)
 	
 	log "Cloudstack stuff"
