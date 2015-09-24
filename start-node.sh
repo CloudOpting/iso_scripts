@@ -145,7 +145,7 @@ dash_db_pwd=dashboard
 	ensure_package_installed "wget"
 	ensure_package_installed "nano"
 	ensure_package_installed "golang"
-	ensure_package_installed "docker"
+	ensure_package_installed "docker-engine"
 	systemctl disable NetworkManager
 	systemctl stop NetworkManager
 	systemctl stop docker
