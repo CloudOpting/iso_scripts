@@ -361,6 +361,25 @@ EOF
 	
 	# Install elasticsearch
 	ensure_package_installed "elasticsearch" 
+	
+	cd /opt/; wget https://download.elastic.co/kibana/kibana/kibana-4.1.2-linux-x64.tar.gz
+	tar xvf kibana-*.tar.gz && mv kibana-*-linux-x64 kibana
+	cat >> /etc/systemd/system/kibana4.service << KIBANA
+[Service]
+ExecStart=/opt/kibana/bin/kibana
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=kibana4
+User=root
+Group=root
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+KIBANA
+	systemctl enable kibana4
+	systemctl start kibana4
 
 }
 
