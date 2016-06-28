@@ -28,8 +28,8 @@ function ensure_package_installed (){
 }
 
 
-function start-opendai {
-	log "start-opendai"
+function start-cloudopting {
+	log "start-cloudopting"
 	
 	log "fixing Vagrant keys"
 	chmod 600 /home/vagrant/.ssh/authorized_keys
@@ -46,13 +46,6 @@ function start-opendai {
 	#zabbix repos
 	rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm
 	# virt-testing repo
-cat << 'EOF1' > /etc/yum.repos.d/virt7-testing.repo
-[virt7-testing]
-name=virt7-testing
-baseurl=http://cbs.centos.org/repos/virt7-testing/x86_64/os/
-enabled=1
-gpgcheck=0
-EOF1
 
 cat << 'EOF2' > /etc/yum.repos.d/docker.repo
 [dockerrepo]
@@ -157,4 +150,4 @@ dash_db_pwd=dashboard
 }
 
 #execute the tasks
-start-opendai | tee /root/all.log
+start-cloudopting | tee /root/all.log
