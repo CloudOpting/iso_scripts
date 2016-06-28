@@ -46,15 +46,6 @@ function start-cloudopting {
 	#zabbix repos
 	rpm -ivh http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/zabbix-release-2.4-1.el7.noarch.rpm
 	log $(yum check-update)
-	# virt-testing repo
-cat << 'EOF1' > /etc/yum.repos.d/virt7-testing.repo
-[virt7-testing]
-name=virt7-testing
-baseurl=http://cbs.centos.org/repos/virt7-testing/x86_64/os/
-enabled=1
-gpgcheck=0
-EOF1
-
 
 cat << 'EOF2' > /etc/yum.repos.d/docker.repo
 [dockerrepo]
@@ -346,7 +337,7 @@ EOF
 	firewall-cmd --permanent --zone=trusted --add-interface=docker0
 	systemctl start docker
 	systemctl enable docker
-	curl -L https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+	curl -L https://github.com/docker/compose/releases/download/1.8.0-rc1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 	chmod +x /usr/local/bin/docker-compose
 
 
